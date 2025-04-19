@@ -257,8 +257,7 @@ openButtonGradient.Color = ColorSequence.new({
 })
 end)
 
-_G.commands = cmds
-loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/-1/refs/heads/main/Шайтан%20комманды1"))()
+_G.cmds = loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/-1/refs/heads/main/Шайтан%20комманды1"))()
 
 clearButton.MouseButton1Click:Connect(function()
   textBox.Text = ""
